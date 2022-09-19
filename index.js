@@ -20,11 +20,11 @@ app.use((req, res, next) => {
 
 const userRoute = require('./routes/userRoute.js')
 const productRoute = require('./routes/productRoute.js')
-const cartRoute = require('./routes/cartRoute')
+// const cartRoute = require('./routes/cartRoute')
 
 app.use("/users", userRoute)
 app.use("/products", productRoute)
-app.use(cartRoute)
+// app.use(cartRoute)
 
 app.listen(app.get("port"), () => {
     console.log(`Listening for calls on port ${app.get("port")}`);
