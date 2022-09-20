@@ -39,14 +39,7 @@ router.get("/", (req, res) => {
       email,
       password,
       full_name,
-      phone,
-      user_type,
-      joined_date,
-      gender,
-      address,
-      description,
-      image,
-      cart
+      user_type
     } = req.body;
     // OR
     // the below requires you to add everything one by one
@@ -57,14 +50,7 @@ router.get("/", (req, res) => {
         `INSERT INTO users (email,
             password,
             full_name,
-            phone,
-            user_type,
-            joined_date,
-            gender,
-            address,
-            description,
-            image,
-            cart) VALUES ("${email}", "${password}", "${full_name}", "${phone}", "${user_type}", "${joined_date}", "${gender}", "${address}", "${description}", "${image}", "${cart}")`,
+            user_type) VALUES ("${email}", "${password}", "${full_name}","${user_type}")`,
         (err, result) => {
           if (err) throw err;
           res.send(result);
@@ -99,14 +85,7 @@ router.get("/", (req, res) => {
         email,
             password,
             full_name,
-            phone,
             user_type,
-            joined_date,
-            gender,
-            address,
-            description,
-            image,
-            cart
       } = req.body;
   
       const salt = bcrypt.genSaltSync(10);
@@ -117,7 +96,7 @@ router.get("/", (req, res) => {
       try {
         con.query(
           //When using the ${}, the content of con.query MUST be in the back tick
-          `UPDATE users set email="${email}", password="${hash}", full_name="${full_name}", phone="${phone}", user_type="${user_type}", joined_date="${joined_date}", gender="${gender}", address="${address}", description="${description}", image="${image}", cart="${cart}" WHERE user_id ="${req.params.id}"`,
+          `UPDATE users set email="${email}", password="${hash}", full_name="${full_name}", user_type="${user_type}" WHERE user_id ="${req.params.id}"`,
           (err, result) => {
             if (err) throw err;
             res.send(result);
@@ -128,37 +107,6 @@ router.get("/", (req, res) => {
         res.status(400).send(error);
       }
     });
-  
-    //edit users
-    // router.put("edit/:id", middleware, (req, res) => {
-    //   // the below allows you to only need one const, but every input required is inside of the brackets
-    //   const {
-    //         birth_date,
-    //         gender,
-    //         address,
-    //         description,
-    //         image
-    //   } = req.body;
-  
-    //   // const salt = bcrypt.genSaltSync(10);
-    //   // const hash = bcrypt.hashSync(password, salt);
-    //   // OR
-    //   // the below requires you to add everything one by one
-    //   //   const email = req.body.email;
-    //   try {
-    //     con.query(
-    //       //When using the ${}, the content of con.query MUST be in the back tick
-    //       `UPDATE users set  birth_date="${birth_date}", gender="${gender}", address="${address}", description="${description}", image="${image}" WHERE user_id ="${req.params.id}"`,
-    //       (err, result) => {
-    //         if (err) throw err;
-    //         res.send(result);
-    //       }
-    //     );
-    //   } catch (error) {
-    //     console.log(error);
-    //     res.status(400).send(error);
-    //   }
-    // });
     router.post("/register", (req, res) => {
       try {
         let sql = "INSERT INTO users SET ?";
@@ -166,14 +114,7 @@ router.get("/", (req, res) => {
           email,
           password,
           full_name,
-          phone,
-          user_type,
-          joined_date,
-          gender,
-          address,
-          description,
-          image,
-          cart
+          user_type
         } = req.body;
      
         // The start of hashing / encryption
@@ -184,14 +125,7 @@ router.get("/", (req, res) => {
           email,
           password:hash,
           full_name,
-          phone,
-          user_type,
-          joined_date,
-          gender,
-          address,
-          description,
-          image,
-          cart
+          user_type
         };
         con.query(sql, user, (err, result) => {
           if (err) throw err;
@@ -208,14 +142,7 @@ router.get("/", (req, res) => {
       // the below allows you to only need one const, but every input required is inside of the brackets
       const {
             full_name,
-            phone,
-            user_type,
-            joined_date,
-            gender,
-            address,
-            description,
-            image,
-            cart
+           email
       } = req.body;
   
       // const salt = bcrypt.genSaltSync(10);
@@ -226,7 +153,7 @@ router.get("/", (req, res) => {
       try {
         con.query(
           //When using the ${}, the content of con.query MUST be in the back tick
-          `UPDATE users set full_name="${full_name}", phone="${phone}", user_type="${user_type}", joined_date="${joined_date}", gender="${gender}", address="${address}", description="${description}", image="${image}", cart="${cart}" WHERE user_id ="${req.params.id}"`,
+          `UPDATE users set email="${email}", full_name="${full_name}" WHERE user_id ="${req.params.id}"`,
           (err, result) => {
             if (err) throw err;
             res.send(result);
@@ -263,12 +190,7 @@ router.get("/", (req, res) => {
                       id: result[0].user_id,
                       full_name: result[0].full_name,
                       email: result[0].email,
-                      user_type: result[0].user_type,
-                      image: result[0].image,
-                      phone: result[0].phone,
-                      gender: result[0].gender,
-                      address: result[0].address,
-                      description: result[0].description
+                      user_type: result[0].user_type
                     },
                   };
                   // Creating a token and setting expiry date
@@ -303,13 +225,9 @@ router.get("/", (req, res) => {
         if (result.length !== 0) {
           let updateSql = `UPDATE users SET ? WHERE user_id ="${req.params.id}"`;
           let updateUser = {
+            email: req.body.email,
+            password: req.body.password,
             full_name: req.body.full_name,
-            joined_date: req.body.joined_date,
-            phone: req.body.phone,
-            gender: req.body.gender,
-            address: req.body.address,
-            description: req.body.description,
-            image: req.body.image,
             user_type: req.body.user_type,
           };
           con.query(updateSql, updateUser, (err, updated) => {
