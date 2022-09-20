@@ -87,8 +87,7 @@ router.get("/:id", (req, res) => {
             descriptions,
             image,
             category,
-            created_date,
-          ) VALUES ( "${name}", "${descriptions}", "${image}", "${category}", "${created_date}" )`,
+            created_date) VALUES ( "${name}", "${descriptions}", "${image}", "${category}", "${created_date}" )`,
         (err, result) => {
           if (err) throw err;
           console.log("product successfully created")
@@ -99,6 +98,9 @@ router.get("/:id", (req, res) => {
       console.log(error);
       res.status(400).send(error);
     }}
+    // else{
+  //     res.send("Not an Admin, access denied!");
+  //   } 
  );
   
 
