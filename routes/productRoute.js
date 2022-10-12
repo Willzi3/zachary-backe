@@ -42,6 +42,7 @@ router.get("/:id", (req, res) => {
         image,
         category,
         created_date,
+        price,
         bedroom,
         bathroom,
         parking_space,
@@ -54,7 +55,7 @@ router.get("/:id", (req, res) => {
     try {
       con.query(
         //When using the ${}, the content of con.query MUST be in the back tick
-        `UPDATE products set name="${name}", descriptions="${descriptions}", image="${image}", category="${category}", created_date="${created_date}", bedroom="${bedroom}", bathroom="${bathroom}", parking_space="${parking_space}", address="${address}", location="${location}" WHERE product_id ="${req.params.id}"`,
+        `UPDATE products set name="${name}", descriptions="${descriptions}", image="${image}", category="${category}", created_date="${created_date}", price="${price}", bedroom="${bedroom}", bathroom="${bathroom}", parking_space="${parking_space}", address="${address}", location="${location}" WHERE product_id ="${req.params.id}"`,
         (err, result) => {
           if (err) throw err;
           res.send(result);
@@ -80,12 +81,12 @@ router.get("/:id", (req, res) => {
       image,
       category,
       created_date,
+      price,
       bedroom,
       bathroom,
       parking_space,
       address,
       location,
-
     } = req.body;
     // OR
     // the below requires you to add everything one by one
@@ -99,11 +100,12 @@ router.get("/:id", (req, res) => {
           image,
           category,
           created_date,
+          price,
           bedroom,
           bathroom,
           parking_space,
           address,
-          location) VALUES ( "${name}", "${descriptions}", "${image}", "${category}", "${created_date}", "${bedroom}", "${bathroom}", "${parking_space}", "${address}", "${location}" )`,
+          location) VALUES ( "${name}", "${descriptions}", "${image}", "${category}", "${created_date}", "${price}", "${bedroom}", "${bathroom}", "${parking_space}", "${address}", "${location}" )`,
         (err, result) => {
           if (err) throw err;
           console.log("product successfully created")
